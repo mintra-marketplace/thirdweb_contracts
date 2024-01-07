@@ -582,7 +582,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         // Payout royalties
         {
             // Get royalty recipients and amounts
-            (address royaltyRecipient, uint256 royaltyAmount) = processRoyalty(
+            (address royaltyRecipient, uint256 royaltyAmount) = _processRoyalty(
                 _listing.assetContract,
                 _listing.tokenId,
                 _totalPayoutAmount
@@ -614,13 +614,13 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         CurrencyTransferLib.transferCurrency(_currencyToUse, _payer, _payee, amountRemaining);
     }
 
-    function processRoyalty(
+    function _processRoyalty(
         address _tokenAddress,
         uint256 _tokenId,
         uint256 _price
     ) internal view returns (address royaltyReceiver, uint256 royaltyAmount) {
         // Check if collection has royalty using ERC2981
-        if (isERC2981(_tokenAddress)) {
+        if (_isERC2981(_tokenAddress)) {
             (royaltyReceiver, royaltyAmount) = IERC2981(_tokenAddress).royaltyInfo(_tokenId, _price);
         } else {
             royaltyAmount = (_price * royalties[_tokenAddress].basisPoints) / MAX_BPS;
@@ -636,7 +636,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
      * @param _contract The address of the contract to check
      * @return A boolean indicating whether the contract is ERC2981 compliant or not
      */
-    function isERC2981(address _contract) internal view returns (bool) {
+    function _isERC2981(address _contract) internal view returns (bool) {
         try IERC2981(_contract).royaltyInfo(0, 0) returns (address, uint256) {
             return true;
         } catch {
