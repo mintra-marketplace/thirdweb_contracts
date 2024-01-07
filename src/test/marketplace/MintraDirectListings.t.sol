@@ -41,7 +41,6 @@ contract MintraDirectListingsTest is BaseTest, IExtension {
 
         // Deploy implementation.
         mintraDirectListingsLogicStandalone = new MintraDirectListings(
-            address(weth),
             address(erc20Aux),
             address(platformFeeRecipient),
             address(wizard)

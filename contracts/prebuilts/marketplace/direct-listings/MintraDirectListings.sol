@@ -264,25 +264,12 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         uint256 totalAmountPls = 0;
         // Iterate over each tokenId
         for (uint256 i = 0; i < _listingId.length; i++) {
-            // Are we buying this item in PLS
-            uint256 price;
-
             Listing memory listing = _directListingsStorage().listings[_listingId[i]];
 
             require(listing.status == IDirectListings.Status.CREATED, "Marketplace: invalid listing.");
 
             if (_currency[i] == CurrencyTransferLib.NATIVE_TOKEN) {
-                //calculate total amount for items being sold for PLS
-                if (_directListingsStorage().currencyPriceForListing[_listingId[i]][_currency[i]] > 0) {
-                    price =
-                        _quantity[i] *
-                        _directListingsStorage().currencyPriceForListing[_listingId[i]][_currency[i]];
-                } else {
-                    require(_currency[i] == listing.currency, "Paying in invalid currency.");
-                    price = _quantity[i] * listing.pricePerToken;
-                }
-
-                totalAmountPls += price;
+                totalAmountPls += _expectedTotalPrice[i];
             }
 
             // Call the buy function for the current tokenId
