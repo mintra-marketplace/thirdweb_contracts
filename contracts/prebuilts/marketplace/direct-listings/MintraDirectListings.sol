@@ -255,11 +255,11 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
     }
 
     function bulkBuyFromListing(
-        uint256[] memory _listingId,
-        address[] memory _buyFor,
-        uint256[] memory _quantity,
-        address[] memory _currency,
-        uint256[] memory _expectedTotalPrice
+        uint256[] calldata _listingId,
+        address[] calldata _buyFor,
+        uint256[] calldata _quantity,
+        address[] calldata _currency,
+        uint256[] calldata _expectedTotalPrice
     ) external payable nonReentrant {
         uint256 totalAmountPls = 0;
         // Iterate over each tokenId
