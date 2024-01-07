@@ -431,7 +431,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         address _collectionAddress,
         uint256 _royaltyInBasisPoints,
         address receiver
-    ) public nonReentrant {
+    ) external nonReentrant {
         require(_collectionAddress != address(0), "_collectionAddress is not set");
         require(_royaltyInBasisPoints >= 0 && _royaltyInBasisPoints <= MAX_BPS, "Royalty not in range");
         require(receiver != address(0), "receiver is not set");
@@ -654,7 +654,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
      * @dev Updates the market fee percentage to a new value
      * @param _platformFeeBps New value for the market fee percentage
      */
-    function setPlatformFeeBps(uint256 _platformFeeBps) public onlyWizard {
+    function setPlatformFeeBps(uint256 _platformFeeBps) external onlyWizard {
         require(_platformFeeBps <= 369, "Fee not in range");
 
         platformFeeBps = _platformFeeBps;
