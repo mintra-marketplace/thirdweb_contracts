@@ -48,7 +48,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         address currency
     );
 
-    event RoyaltyUpdated(address assetContract, uint256 royaltyAmount, address royaltyRecipient);
+    event RoyaltyUpdated(address updater, address assetContract, uint256 royaltyAmount, address royaltyRecipient);
     event PlatformFeeUpdated(uint256 platformFeeBps);
 
     address public immutable wizard;
@@ -466,7 +466,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         royalties[_collectionAddress] = royalty;
 
         // Emit a RoyaltyUpdated
-        emit RoyaltyUpdated(_collectionAddress, _royaltyInBasisPoints, receiver);
+        emit RoyaltyUpdated(msg.sender, _collectionAddress, _royaltyInBasisPoints, receiver);
     }
 
     /*///////////////////////////////////////////////////////////////
