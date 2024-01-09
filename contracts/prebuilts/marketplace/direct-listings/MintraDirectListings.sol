@@ -455,7 +455,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         address receiver
     ) public nonReentrant {
         require(_collectionAddress != address(0), "_collectionAddress is not set");
-        require(_royaltyInBasisPoints >= 0 && _royaltyInBasisPoints <= 10000, "Royalty not in range");
+        require(_royaltyInBasisPoints >= 0 && _royaltyInBasisPoints <= MAX_BPS, "Royalty not in range");
         require(receiver != address(0), "receiver is not set");
 
         // Check that the caller is the owner/creator of the collection contract
@@ -645,7 +645,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         if (isERC2981(_tokenAddress)) {
             (royaltyReceiver, royaltyAmount) = IERC2981(_tokenAddress).royaltyInfo(_tokenId, _price);
         } else {
-            royaltyAmount = (_price * royalties[_tokenAddress].basisPoints) / 10000;
+            royaltyAmount = (_price * royalties[_tokenAddress].basisPoints) / MAX_BPS;
             royaltyReceiver = royalties[_tokenAddress].receiver;
         }
 
