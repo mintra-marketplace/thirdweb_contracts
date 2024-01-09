@@ -55,7 +55,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
     address private immutable mintTokenAddress;
     address public immutable platformFeeRecipient;
     uint256 public platformFeeBps = 225;
-    uint256 public platformFeeBpsMint = 150;
+    uint256 public constant platformFeeBpsMint = 150;
     mapping(address => Royalty) public royalties;
 
     /*///////////////////////////////////////////////////////////////
