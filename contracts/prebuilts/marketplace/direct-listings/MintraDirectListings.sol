@@ -65,9 +65,6 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
     /// @dev The max bps of the contract. So, 10_000 == 100 %
     uint64 private constant MAX_BPS = 10_000;
 
-    /// @dev The address of the native token wrapper contract.
-    address private immutable nativeTokenWrapper;
-
     /*///////////////////////////////////////////////////////////////
                             Modifier
     //////////////////////////////////////////////////////////////*/
@@ -99,13 +96,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
                             Constructor logic
     //////////////////////////////////////////////////////////////*/
 
-    constructor(
-        address _nativeTokenWrapper,
-        address _mintTokenAddress,
-        address _platformFeeRecipient,
-        address _wizard
-    ) {
-        nativeTokenWrapper = _nativeTokenWrapper;
+    constructor(address _mintTokenAddress, address _platformFeeRecipient, address _wizard) {
         mintTokenAddress = _mintTokenAddress;
         platformFeeRecipient = _platformFeeRecipient;
         wizard = _wizard;
