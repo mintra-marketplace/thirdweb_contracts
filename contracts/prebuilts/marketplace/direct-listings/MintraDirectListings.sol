@@ -277,7 +277,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         }
 
         // Make sure that the total price for items bought with PLS is equal to the amount sent
-        require(msg.value == totalAmountPls || (totalAmountPls == 0 && msg.value == 0), "Incorrect PLS amount sent");
+        require(msg.value == totalAmountPls, "Incorrect PLS amount sent");
     }
 
     /// @notice Buy NFTs from a listing.
