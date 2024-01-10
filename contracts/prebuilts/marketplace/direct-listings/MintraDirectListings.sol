@@ -65,6 +65,8 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
     /// @dev The max bps of the contract. So, 10_000 == 100 %
     uint64 private constant MAX_BPS = 10_000;
 
+    uint64 private constant MAX_PLATFORM_FEE = 369;
+
     /*///////////////////////////////////////////////////////////////
                             Modifier
     //////////////////////////////////////////////////////////////*/
@@ -655,7 +657,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
      * @param _platformFeeBps New value for the market fee percentage
      */
     function setPlatformFeeBps(uint256 _platformFeeBps) public onlyWizard {
-        require(_platformFeeBps <= 369, "Fee not in range");
+        require(_platformFeeBps <= MAX_PLATFORM_FEE, "Fee not in range");
 
         platformFeeBps = _platformFeeBps;
 
