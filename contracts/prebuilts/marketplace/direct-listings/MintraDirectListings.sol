@@ -48,7 +48,7 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
         address currency
     );
 
-    event RoyaltyUpdated(address updater, address assetContract, uint256 royaltyAmount, address royaltyRecipient);
+    event RoyaltyUpdated(address updater, address assetContract, uint256 royaltyBps, address royaltyRecipient);
     event PlatformFeeUpdated(uint256 platformFeeBps);
 
     address public immutable wizard;
@@ -425,26 +425,27 @@ contract MintraDirectListings is IDirectListings, Multicall, ReentrancyGuard {
      * @notice Set or update the royalty for a collection
      * @dev Sets or updates the royalty for a collection to a new value
      * @param _collectionAddress Address of the collection to set the royalty for
-     * @param _royaltyInBasisPoints New royalty value, in basis points (1 basis point = 0.01%)
+     * @param _royaltyBps New royalty value, in basis points (1 basis point = 0.01%)
+     * @param _receiver Address of the royalty receiver
      */
     function createOrUpdateRoyalty(
         address _collectionAddress,
-        uint256 _royaltyInBasisPoints,
-        address receiver
+        uint256 _royaltyBps,
+        address _receiver
     ) public nonReentrant {
         require(_collectionAddress != address(0), "_collectionAddress is not set");
-        require(_royaltyInBasisPoints >= 0 && _royaltyInBasisPoints <= MAX_BPS, "Royalty not in range");
-        require(receiver != address(0), "receiver is not set");
+        require(_royaltyBps >= 0 && _royaltyBps <= MAX_BPS, "Royalty not in range");
+        require(_receiver != address(0), "receiver is not set");
 
         // Check that the caller is the owner/creator of the collection contract
         require(Ownable(_collectionAddress).owner() == msg.sender, "Unauthorized");
 
         // Create a new Royalty object with the given value and store it in the royalties mapping
-        Royalty memory royalty = Royalty(receiver, _royaltyInBasisPoints);
+        Royalty memory royalty = Royalty(_receiver, _royaltyBps);
         royalties[_collectionAddress] = royalty;
 
         // Emit a RoyaltyUpdated
-        emit RoyaltyUpdated(msg.sender, _collectionAddress, _royaltyInBasisPoints, receiver);
+        emit RoyaltyUpdated(msg.sender, _collectionAddress, _royaltyBps, _receiver);
     }
 
     /*///////////////////////////////////////////////////////////////
